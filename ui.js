@@ -23,7 +23,7 @@ function generate_table() {
         // cell.appendChild(cellText);
         row.appendChild(cell);
         if ((i % 2 == 0 && j % 2 ==0) || (i % 2 != 0 && j % 2 != 0)) {
-            cell.style.backgroundColor = 'black';
+            cell.style.backgroundColor = 'yellow';
         }
         
         // console.log(i,j)

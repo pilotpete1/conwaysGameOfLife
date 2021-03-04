@@ -6,18 +6,18 @@
 
 
 td{
-    background-color: yellow;
+    background-color: pink;
     /* border: 1px solid pink; */
     height: 5px;
     width: 5px;
 }
 
 table{
-    /* background-color: pink; */
+    background-color: black;
     /* width: 200px; */
     /* height: 200px; */
     /* border: 1px solid black; */
-    border-spacing: 0px;
+    border-spacing: 2px;
     /* table-layout: fixed; */
 }
 
