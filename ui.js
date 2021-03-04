@@ -23,7 +23,7 @@ function generate_table() {
         // cell.appendChild(cellText);
         row.appendChild(cell);
         if ((i % 2 == 0 && j % 2 ==0) || (i % 2 != 0 && j % 2 != 0)) {
-            cell.style.backgroundColor = 'yellow';
+            cell.style.backgroundColor = 'white';
         }
         
         // console.log(i,j)
@@ -38,3 +38,36 @@ function generate_table() {
     // appends <table> into <body>
     body.appendChild(tbl);
   }
+
+
+const array = [];
+
+// for (let i = 0; i < 10; i++) {
+//   for (let j = 0; j < 10; j++) {
+//     array.push(i);
+//   };
+// };
+
+// for (let i = 0; i < 10; i++) {
+//   array.push(i);
+// };
+
+// array[0].push(2);
+
+// console.log(array);
+
+const array2 = [[[10],[10],[3]],[[10],[10]]];
+
+console.log(array2);
+
+
+
+
+// for (let i = 0; i < 10; i++) {
+//   array[0].push(i);
+//   for (let j = 0; j < 10; j++) {
+//     array[i].push(j);
+//   };
+// };
+
+// console.log(array);
