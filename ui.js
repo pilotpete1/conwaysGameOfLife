@@ -9,11 +9,11 @@ function generate_table() {
     var tblBody = document.createElement("tbody");
   
     // creating all cells
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 10; i++) {
       // creates a table row
       var row = document.createElement("tr");
   
-      for (var j = 0; j < 100; j++) {
+      for (var j = 0; j < 10; j++) {
         // Create a <td> element and a text node, make the text
         // node the contents of the <td>, and put the <td> at
         // the end of the table row
@@ -40,34 +40,344 @@ function generate_table() {
   }
 
 
-const array = [];
+var array1 = [];
+var array2 = [];
 
-// for (let i = 0; i < 10; i++) {
-//   for (let j = 0; j < 10; j++) {
-//     array.push(i);
-//   };
-// };
-
-// for (let i = 0; i < 10; i++) {
-//   array.push(i);
-// };
-
-// array[0].push(2);
-
-// console.log(array);
-
-const array2 = [[[10],[10],[3]],[[10],[10]]];
-
+console.log(array1);
 console.log(array2);
 
+//creates a 10x10 array of random 1s or 0s
+for (let i = 0; i< 10; i++) {
+  array1[i] = [];
+  for (let j = 0; j< 10; j++) {
+    const random_boolean = Math.random() < 0.5;
+    if (random_boolean === true) {
+      array1[i].push(0);
+    } else {
+      array1[i].push(1);
+    };
+  };
+};
+
+//set array2 to equal array1
+for (let i = 0; i< array1.length; i++) {
+  array2[i] = [];
+  for (let j = 0; j< array1.length; j++) {
+    array2[i][j] = array1[i][j];
+  };
+};
 
 
 
-// for (let i = 0; i < 10; i++) {
-//   array[0].push(i);
-//   for (let j = 0; j < 10; j++) {
-//     array[i].push(j);
-//   };
+
+//array2 = [...array1];
+console.log(array1 === array2);
+
+//array2[0][0] = 9;
+
+console.log(array1 === array2);
+console.log(array1);
+console.log(array2);
+console.log(array1 === array2);
+
+
+//0 = dead, 1 = alive
+// Any live cell with two or three live neighbours survives.
+// Any dead cell with three live neighbours becomes a live cell.
+// All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+var rowNum = 0;
+var neighboursAlive = 0;
+var neighboursDead = 0;
+
+function next() {
+  rowNum = 0;
+  neighboursAlive = 0;
+  neighboursDead = 0
+
+  array1.forEach(funcLoop1);
+
+  console.log(array1);
+  console.log(array2);
+
+  for (let i = 0; i< array1.length; i++) {
+    array1[i] = [];
+    for (let j = 0; j< array1.length; j++) {
+      array1[i][j] = array2[i][j];
+    };
+  };
+
+  for (let i = 0; i < array1.length; i++) {
+    document.getElementById('p' + i).innerHTML = array1[i];
+
+    // var para = document.createElement("p");
+    // var node = document.createTextNode(array1[i]);
+    // para.appendChild(node);
+  
+    // var element = document.getElementById("div1");
+    // element.appendChild(para);
+  };
+  
+  // document.body.createElement(array1);
+  // document.body.innerHTML.appendChild('array1');
+  // document.getElementById("p1").innerHTML = array1;
+  // for (let i = 0; i < array1.length; i++) {
+  //     document.getElementById("p1").innerHTML = array1[i];
+  // }
+};
+
+
+
+function funcLoop1(item, index, array) {
+  console.log(rowNum);
+  console.log(index);
+
+
+  // top of grid - only check left, right & down
+  if (index === 0) {
+    item.forEach(topRowLoop);
+  } else if (index === 9) {
+    item.forEach(bottomRowLoop);
+  } else {
+    item.forEach(middleRowLoop);
+  };
+  rowNum ++;
+}
+
+// Top row of the grid
+function topRowLoop(item, index, array) {
+  console.log(index);
+  neighboursAlive = 0;
+  neighboursDead = 0
+
+  // Only check to see if anything right / down
+  if (index === 0) {
+    console.log('top' + item + 'left');
+    checkRight(array, index);
+    checkDown(array, index);
+    checkDownRight(array, index);
+
+  // Only check to see if anything left / down
+  } else if (index === 9) {
+    console.log('top' + item + 'right');
+    checkLeft(array, index);
+    checkDown(array, index);
+    checkDownLeft(array, index);
+  
+  // Checks left / right & down
+  } else {
+    console.log('top' + item);
+    checkRight(array, index);
+    checkLeft(array, index);
+    checkDown(array, index);
+    checkDownRight(array, index);
+    checkDownLeft(array, index);
+  };
+  console.log('alive ' + neighboursAlive);
+  console.log('dead ' + neighboursDead);
+  cellStatus(item, index);
+};
+
+// Middle rows of the grid
+function middleRowLoop(item, index, array) {
+  neighboursAlive = 0;
+  neighboursDead = 0
+  // Only check to see if anything right / up / down
+  if (index === 0) {
+    console.log('middle' + item + 'left');
+    checkRight(array, index);
+    checkDown(array, index);
+    checkDownRight(array, index);
+    checkUp(array, index);
+    checkUpRight(array, index);
+  
+  // Only check to see if anything left / up / down
+  } else if (index === 9) {
+    console.log('middle' + item + 'right');
+    checkLeft(array, index);
+    checkDown(array, index);
+    checkDownLeft(array, index);
+    checkUp(array, index);
+    checkUpLeft(array, index);
+  
+  // Checks left / right / up & down
+  } else {
+    console.log('middle' + item);
+    checkRight(array, index);
+    checkDown(array, index);
+    checkDownRight(array, index);
+    checkUp(array, index);
+    checkUpRight(array, index);
+    checkLeft(array, index);
+    checkDownLeft(array, index);
+    checkUpLeft(array, index);
+  };
+
+  cellStatus(item, index);
+};
+
+// Bottom row of the grid
+function bottomRowLoop(item, index, array) {
+  neighboursAlive = 0;
+  neighboursDead = 0
+  // Only check to see if anything right / up
+  if (index === 0) {
+    console.log('bottom' + item + 'left');
+    checkRight(array, index);
+    checkUp(array, index);
+    checkUpRight(array, index);
+  // Only check to see if anything left / up
+  } else if (index === 9) {
+    console.log('bottom' + item + 'right');
+    checkLeft(array, index);
+    checkUp(array, index);
+    checkUpLeft(array, index);
+  // Checks left / right & up
+  } else {
+    console.log('bottom' + item);
+    checkRight(array, index);
+    checkUp(array, index);
+    checkUpRight(array, index);
+    checkLeft(array, index);
+    checkUpLeft(array, index);
+  };
+
+  cellStatus(item, index);
+}
+
+function checkLeft(array, index) {
+  if (array[index - 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkRight(array, index) {
+  if (array[index + 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+}
+function checkUp(array, index) {
+  if (array1[rowNum - 1][index] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkDown(array, index) {
+  if (array1[rowNum + 1][index] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkUpLeft(array, index) {
+  if (array1[rowNum - 1][index - 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkUpRight(array, index) {
+  if (array1[rowNum - 1][index + 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkDownLeft(array, index) {
+  if (array1[rowNum + 1][index - 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+function checkDownRight(array, index) {
+  if (array1[rowNum + 1][index + 1] === 0) {
+    neighboursDead ++;
+  } else {
+    neighboursAlive ++;
+  };
+};
+
+function cellStatus(item, index) {
+  if (item === 1 && (neighboursAlive === 2 || neighboursAlive === 3)) {
+    console.log('Live!');
+    array2[rowNum][index] = 1;
+  } else if (item === 0 && neighboursAlive === 3) {
+    console.log('Born!')
+    array2[rowNum][index] = 1;
+  } else {
+    console.log('Die!')
+    array2[rowNum][index] = 0;
+  };
+};
+
+
+
+
+
+
+// function funcLoop2(item, index, array) {
+   
+//   item.forEach(funcLoop3);
+
+//   rowNum ++;
 // };
 
-// console.log(array);
+// function funcLoop3(item, index, array) {
+//   //right
+//   if (array[index + 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   console.log(neighboursAlive);
+//   console.log(neighboursDead);
+//   //left
+//   if (array[index - 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   //down
+//   if (array1[rowNum + 1][index] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   // down & right
+//   if (array1[rowNum + 1][index + 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   // down & left
+//   if (array1[rowNum + 1][index - 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   //up
+//   if (array1[rowNum - 1][index] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   // up & right
+//   if (array1[rowNum - 1][index + 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   // up & left
+//   if (array1[rowNum - 1][index - 1] === 0) {
+//     neighboursDead ++;
+//   } else {
+//     neighboursAlive ++;
+//   };
+//   console.log(neighboursAlive);
+//   console.log(neighboursDead);
+// }
