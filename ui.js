@@ -1,5 +1,5 @@
 console.log('Hello World!');
-const gridsize = 50;
+const gridsize = 100;
 
 function generate_table() {
     // get the reference for the body
@@ -23,7 +23,6 @@ function generate_table() {
         var cell = document.createElement("td");
         //gives each cell an attribute
         //cell.setAttribute('id','td' + i + j);
-
         if (i < 10 && j < 10) {
           cell.setAttribute('id','td0' + i + '0' + j);
         } else if (i < 10 && j > 9) {
@@ -33,7 +32,9 @@ function generate_table() {
         } else {
           cell.setAttribute('id','td' + i + j);
         }
-
+        
+        cell.addEventListener('click', function(){ changeCol(i, j); });
+        
 
         // var cellText = document.createTextNode("row "+i+", column "+j);
         // var cellText = document.createTextNode(0);
@@ -61,8 +62,8 @@ var array1 = [];
 var array2 = [];
 
 
-console.log(array1);
-console.log(array2);
+// console.log(array1);
+// console.log(array2);
 
 
 //0 = dead, 1 = alive
@@ -123,6 +124,22 @@ function setRandomGrid() {
   };
 };
 
+
+
+function changeCol(i,j) {
+  console.log('Click!!');
+  var state = array1[i][j];
+  console.log(i + j)
+
+  if (state === 0) {
+    array1[i][j] = 1;
+  } else {
+    array1[i][j] = 0;
+  }
+
+  displayOnGrid();
+};
+
 // // To allow the user to create specify the starting cells
 // function setSpecificGrid() {
 //   clearGrid();
@@ -144,8 +161,8 @@ function next() {
 
   array1.forEach(funcLoop1);
 
-  console.log(array1);
-  console.log(array2);
+  // console.log(array1);
+  // console.log(array2);
 
   // makes array1 equal the new array (array2)
   for (let i = 0; i< array1.length; i++) {
@@ -205,8 +222,8 @@ function displayOnGrid() {
 
 // loops through the rows in the grid
 function funcLoop1(item, index, array) {
-  console.log(rowNum);
-  console.log(index);
+  // console.log(rowNum);
+  // console.log(index);
 
 
   // top of grid - only check left, right & down
@@ -222,35 +239,35 @@ function funcLoop1(item, index, array) {
 
 // Top row of the grid
 function topRowLoop(item, index, array) {
-  console.log(index);
+  // console.log(index);
   neighboursAlive = 0;
   neighboursDead = 0
 
   // Only check to see if anything right / down
   if (index === 0) {
-    console.log('top' + item + 'left');
+    // console.log('top' + item + 'left');
     checkRight(array, index);
     checkDown(array, index);
     checkDownRight(array, index);
 
   // Only check to see if anything left / down
   } else if (index === gridsize - 1) {
-    console.log('top' + item + 'right');
+    // console.log('top' + item + 'right');
     checkLeft(array, index);
     checkDown(array, index);
     checkDownLeft(array, index);
   
   // Checks left / right & down
   } else {
-    console.log('top' + item);
+    // console.log('top' + item);
     checkRight(array, index);
     checkLeft(array, index);
     checkDown(array, index);
     checkDownRight(array, index);
     checkDownLeft(array, index);
   };
-  console.log('alive ' + neighboursAlive);
-  console.log('dead ' + neighboursDead);
+  // console.log('alive ' + neighboursAlive);
+  // console.log('dead ' + neighboursDead);
   cellStatus(item, index);
 };
 
@@ -260,7 +277,7 @@ function middleRowLoop(item, index, array) {
   neighboursDead = 0
   // Only check to see if anything right / up / down
   if (index === 0) {
-    console.log('middle' + item + 'left');
+    // console.log('middle' + item + 'left');
     checkRight(array, index);
     checkDown(array, index);
     checkDownRight(array, index);
@@ -269,7 +286,7 @@ function middleRowLoop(item, index, array) {
   
   // Only check to see if anything left / up / down
   } else if (index === gridsize - 1) {
-    console.log('middle' + item + 'right');
+    // console.log('middle' + item + 'right');
     checkLeft(array, index);
     checkDown(array, index);
     checkDownLeft(array, index);
@@ -278,7 +295,7 @@ function middleRowLoop(item, index, array) {
   
   // Checks left / right / up & down
   } else {
-    console.log('middle' + item);
+    // console.log('middle' + item);
     checkRight(array, index);
     checkDown(array, index);
     checkDownRight(array, index);
@@ -298,19 +315,19 @@ function bottomRowLoop(item, index, array) {
   neighboursDead = 0
   // Only check to see if anything right / up
   if (index === 0) {
-    console.log('bottom' + item + 'left');
+    // console.log('bottom' + item + 'left');
     checkRight(array, index);
     checkUp(array, index);
     checkUpRight(array, index);
   // Only check to see if anything left / up
   } else if (index === gridsize - 1) {
-    console.log('bottom' + item + 'right');
+    // console.log('bottom' + item + 'right');
     checkLeft(array, index);
     checkUp(array, index);
     checkUpLeft(array, index);
   // Checks left / right & up
   } else {
-    console.log('bottom' + item);
+    // console.log('bottom' + item);
     checkRight(array, index);
     checkUp(array, index);
     checkUpRight(array, index);
@@ -382,13 +399,13 @@ function checkDownRight(array, index) {
 // updates array2 for the cells next state
 function cellStatus(item, index) {
   if (item === 1 && (neighboursAlive === 2 || neighboursAlive === 3)) {
-    console.log('Live!');
+    // console.log('Live!');
     array2[rowNum][index] = 1;
   } else if (item === 0 && neighboursAlive === 3) {
-    console.log('Born!')
+    // console.log('Born!')
     array2[rowNum][index] = 1;
   } else {
-    console.log('Die!')
+    // console.log('Die!')
     array2[rowNum][index] = 0;
   };
 };
