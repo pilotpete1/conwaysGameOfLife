@@ -1,4 +1,5 @@
 console.log('Hello World!');
+const gridsize = 50;
 
 function generate_table() {
     // get the reference for the body
@@ -9,22 +10,38 @@ function generate_table() {
     var tblBody = document.createElement("tbody");
   
     // creating all cells
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < gridsize; i++) {
       // creates a table row
       var row = document.createElement("tr");
+      //gives each row an id
+      //row.setAttribute('id','tr' + i);
   
-      for (var j = 0; j < 10; j++) {
+      for (var j = 0; j < gridsize; j++) {
         // Create a <td> element and a text node, make the text
         // node the contents of the <td>, and put the <td> at
         // the end of the table row
         var cell = document.createElement("td");
+        //gives each cell an attribute
+        //cell.setAttribute('id','td' + i + j);
+
+        if (i < 10 && j < 10) {
+          cell.setAttribute('id','td0' + i + '0' + j);
+        } else if (i < 10 && j > 9) {
+          cell.setAttribute('id','td0' + i + j);
+        } else if (i > 9 && j < 10) {
+          cell.setAttribute('id','td' + i + '0' + j);
+        } else {
+          cell.setAttribute('id','td' + i + j);
+        }
+
+
         // var cellText = document.createTextNode("row "+i+", column "+j);
         // var cellText = document.createTextNode(0);
         // cell.appendChild(cellText);
         row.appendChild(cell);
-        if ((i % 2 == 0 && j % 2 ==0) || (i % 2 != 0 && j % 2 != 0)) {
-            cell.style.backgroundColor = 'white';
-        }
+        // if ((i % 2 == 0 && j % 2 ==0) || (i % 2 != 0 && j % 2 != 0)) {
+        //     cell.style.backgroundColor = 'white';
+        // }
         
         // console.log(i,j)
       }
@@ -43,42 +60,9 @@ function generate_table() {
 var array1 = [];
 var array2 = [];
 
+
 console.log(array1);
 console.log(array2);
-
-//creates a 10x10 array of random 1s or 0s
-for (let i = 0; i< 10; i++) {
-  array1[i] = [];
-  for (let j = 0; j< 10; j++) {
-    const random_boolean = Math.random() < 0.5;
-    if (random_boolean === true) {
-      array1[i].push(0);
-    } else {
-      array1[i].push(1);
-    };
-  };
-};
-
-//set array2 to equal array1
-for (let i = 0; i< array1.length; i++) {
-  array2[i] = [];
-  for (let j = 0; j< array1.length; j++) {
-    array2[i][j] = array1[i][j];
-  };
-};
-
-
-
-
-//array2 = [...array1];
-console.log(array1 === array2);
-
-//array2[0][0] = 9;
-
-console.log(array1 === array2);
-console.log(array1);
-console.log(array2);
-console.log(array1 === array2);
 
 
 //0 = dead, 1 = alive
@@ -90,16 +74,80 @@ var rowNum = 0;
 var neighboursAlive = 0;
 var neighboursDead = 0;
 
+// called on btn press - sets all cells to be 0!
+function clearGrid() {
+  // creates a gridsize x gridsize array of random 1s or 0s
+  for (let i = 0; i < gridsize; i++) {
+    array1[i] = [];
+    array2[i] = [];
+    for (let j = 0; j < gridsize; j++) {
+        array1[i].push(0);
+        array2[i].push(0);
+    };
+  };
+
+  displayOnGrid();
+};
+
+// called on btn press!
+function newRandomGrid() {
+  rowNum = 0;
+  neighboursAlive = 0;
+  neighboursDead = 0;
+  setRandomGrid();
+  //outpudGrid();
+  displayOnGrid();
+};
+
+// creates and randomizes the arrays! - used for first time / resets
+function setRandomGrid() {
+  // creates a gridsize x gridsize array of random 1s or 0s
+  for (let i = 0; i < gridsize; i++) {
+    array1[i] = [];
+    for (let j = 0; j < gridsize; j++) {
+      const random_boolean = Math.random() < 0.8;
+      if (random_boolean === true) {
+        array1[i].push(0);
+      } else {
+        array1[i].push(1);
+      };
+    };
+  };
+
+  // sets array2 to equal array1
+  for (let i = 0; i< array1.length; i++) {
+    array2[i] = [];
+    for (let j = 0; j< array1.length; j++) {
+      array2[i][j] = array1[i][j];
+    };
+  };
+};
+
+// // To allow the user to create specify the starting cells
+// function setSpecificGrid() {
+//   clearGrid();
+  
+//   array1[1][1] = 1;
+//   array1[1][2] = 1;
+//   array1[1][3] = 1;
+//   array1[1][4] = 1;
+
+
+//   displayOnGrid();
+// };
+
+// called whenever the next btn is clicked
 function next() {
   rowNum = 0;
   neighboursAlive = 0;
-  neighboursDead = 0
+  neighboursDead = 0;
 
   array1.forEach(funcLoop1);
 
   console.log(array1);
   console.log(array2);
 
+  // makes array1 equal the new array (array2)
   for (let i = 0; i< array1.length; i++) {
     array1[i] = [];
     for (let j = 0; j< array1.length; j++) {
@@ -107,27 +155,55 @@ function next() {
     };
   };
 
-  for (let i = 0; i < array1.length; i++) {
-    document.getElementById('p' + i).innerHTML = array1[i];
-
-    // var para = document.createElement("p");
-    // var node = document.createTextNode(array1[i]);
-    // para.appendChild(node);
   
-    // var element = document.getElementById("div1");
-    // element.appendChild(para);
-  };
-  
-  // document.body.createElement(array1);
-  // document.body.innerHTML.appendChild('array1');
-  // document.getElementById("p1").innerHTML = array1;
-  // for (let i = 0; i < array1.length; i++) {
-  //     document.getElementById("p1").innerHTML = array1[i];
-  // }
+  //outpudGrid();
+  displayOnGrid();
 };
 
+// outputs the grid on browser
+function outpudGrid() {
+  // clears all the paras in div1
+  document.getElementById('div1').innerHTML = '';
+  // outputs the grid on browser window as 1s & 0s
+  for (let i = 0; i < array1.length; i++) {
 
+    var para = document.createElement("p");
+    var node = document.createTextNode(array1[i]);
+    para.appendChild(node);
 
+    var element = document.getElementById("div1");
+    element.appendChild(para);
+  };
+};
+
+function displayOnGrid() {
+  
+  for (let i = 0; i < gridsize; i++) {
+    for (let j = 0; j < gridsize; j++) {
+      var idName = ''
+      if (i < 10 && j < 10) {
+        idName = ('id','td0' + i + '0' + j);
+      } else if (i < 10 && j > 9) {
+        idName = ('id','td0' + i + j);
+      } else if (i > 9 && j < 10) {
+        idName = ('id','td' + i + '0' + j);
+      } else {
+        idName = ('id','td' + i + j);
+      }
+
+      if (array1[i][j] === 0) {
+        var cell = document.getElementById(idName);
+        cell.style.backgroundColor = 'white';
+      } else {
+        var cell = document.getElementById(idName);
+        cell.style.backgroundColor = 'blue';
+      };
+    };
+  };
+  
+};
+
+// loops through the rows in the grid
 function funcLoop1(item, index, array) {
   console.log(rowNum);
   console.log(index);
@@ -136,13 +212,13 @@ function funcLoop1(item, index, array) {
   // top of grid - only check left, right & down
   if (index === 0) {
     item.forEach(topRowLoop);
-  } else if (index === 9) {
+  } else if (index === gridsize - 1) {
     item.forEach(bottomRowLoop);
   } else {
     item.forEach(middleRowLoop);
   };
   rowNum ++;
-}
+};
 
 // Top row of the grid
 function topRowLoop(item, index, array) {
@@ -158,7 +234,7 @@ function topRowLoop(item, index, array) {
     checkDownRight(array, index);
 
   // Only check to see if anything left / down
-  } else if (index === 9) {
+  } else if (index === gridsize - 1) {
     console.log('top' + item + 'right');
     checkLeft(array, index);
     checkDown(array, index);
@@ -192,7 +268,7 @@ function middleRowLoop(item, index, array) {
     checkUpRight(array, index);
   
   // Only check to see if anything left / up / down
-  } else if (index === 9) {
+  } else if (index === gridsize - 1) {
     console.log('middle' + item + 'right');
     checkLeft(array, index);
     checkDown(array, index);
@@ -227,7 +303,7 @@ function bottomRowLoop(item, index, array) {
     checkUp(array, index);
     checkUpRight(array, index);
   // Only check to see if anything left / up
-  } else if (index === 9) {
+  } else if (index === gridsize - 1) {
     console.log('bottom' + item + 'right');
     checkLeft(array, index);
     checkUp(array, index);
@@ -245,6 +321,7 @@ function bottomRowLoop(item, index, array) {
   cellStatus(item, index);
 }
 
+// counts dead / alive neighbours for given cell
 function checkLeft(array, index) {
   if (array[index - 1] === 0) {
     neighboursDead ++;
@@ -302,6 +379,7 @@ function checkDownRight(array, index) {
   };
 };
 
+// updates array2 for the cells next state
 function cellStatus(item, index) {
   if (item === 1 && (neighboursAlive === 2 || neighboursAlive === 3)) {
     console.log('Live!');
@@ -317,67 +395,3 @@ function cellStatus(item, index) {
 
 
 
-
-
-
-// function funcLoop2(item, index, array) {
-   
-//   item.forEach(funcLoop3);
-
-//   rowNum ++;
-// };
-
-// function funcLoop3(item, index, array) {
-//   //right
-//   if (array[index + 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   console.log(neighboursAlive);
-//   console.log(neighboursDead);
-//   //left
-//   if (array[index - 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   //down
-//   if (array1[rowNum + 1][index] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   // down & right
-//   if (array1[rowNum + 1][index + 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   // down & left
-//   if (array1[rowNum + 1][index - 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   //up
-//   if (array1[rowNum - 1][index] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   // up & right
-//   if (array1[rowNum - 1][index + 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   // up & left
-//   if (array1[rowNum - 1][index - 1] === 0) {
-//     neighboursDead ++;
-//   } else {
-//     neighboursAlive ++;
-//   };
-//   console.log(neighboursAlive);
-//   console.log(neighboursDead);
-// }
