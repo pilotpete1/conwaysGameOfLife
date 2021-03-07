@@ -97,6 +97,7 @@ function clearGrid() {
 // called when a cell is clicked so that the array is updated.
 function updateGrid() {
   isGridClear = false;
+  var liveCells = 0;
   for (let i = 0; i < gridsize; i++) {
     for (let j = 0; j < gridsize; j++) {
       var idName = ''
@@ -115,13 +116,14 @@ function updateGrid() {
 
         if (cell.style.backgroundColor === 'blue') {
           array1[i][j] = 1;
+          liveCells ++;
         } else {
           array1[i][j] = 0;
         }
     };
   };
 
-  if (isGridClear === true) {
+  if (liveCells === 0) {
     document.getElementById('outputMessage').innerHTML = 'Everythings Dead, nothing will happen, chill!';
   } else {
     document.getElementById('outputMessage').innerHTML = 'Still here??';
