@@ -1,7 +1,26 @@
 console.log('Hello World!');
 const gridsize = 100;
 
+var array1 = [];
+var array2 = [];
+
+
+
+// console.log(array1);
+// console.log(array2);
+
+
+//0 = dead, 1 = alive
+// Any live cell with two or three live neighbours survives.
+// Any dead cell with three live neighbours becomes a live cell.
+// All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+var rowNum = 0;
+var neighboursAlive = 0;
+var neighboursDead = 0;
+
 function generate_table() {
+  
     // get the reference for the body
     var body = document.getElementsByTagName("body")[0];
   
@@ -33,7 +52,7 @@ function generate_table() {
           cell.setAttribute('id','td' + i + j);
         }
         
-        cell.addEventListener('click', function(){ changeCol(i, j); });
+        
         
 
         // var cellText = document.createTextNode("row "+i+", column "+j);
@@ -45,6 +64,20 @@ function generate_table() {
         // }
         
         // console.log(i,j)
+
+        cell.addEventListener('click', function (e) {
+          console.log(e.target);
+          // e.target.style.backgroundColor = 'blue';
+          // cells[e].style.backgroundColor = 'blue';
+
+          if (e.target.style.backgroundColor === 'blue') {
+            e.target.style.backgroundColor = 'white'
+          } else {
+            e.target.style.backgroundColor = 'blue'
+          };
+
+          updateGrid();
+        });
       }
   
       // add the row to the end of the table body
@@ -55,25 +88,12 @@ function generate_table() {
     tbl.appendChild(tblBody);
     // appends <table> into <body>
     body.appendChild(tbl);
+
+    clearGrid();
   }
 
 
-var array1 = [];
-var array2 = [];
 
-
-// console.log(array1);
-// console.log(array2);
-
-
-//0 = dead, 1 = alive
-// Any live cell with two or three live neighbours survives.
-// Any dead cell with three live neighbours becomes a live cell.
-// All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-
-var rowNum = 0;
-var neighboursAlive = 0;
-var neighboursDead = 0;
 
 // called on btn press - sets all cells to be 0!
 function clearGrid() {
@@ -88,6 +108,32 @@ function clearGrid() {
   };
 
   displayOnGrid();
+};
+
+function updateGrid() {
+  for (let i = 0; i < gridsize; i++) {
+    for (let j = 0; j < gridsize; j++) {
+      var idName = ''
+      if (i < 10 && j < 10) {
+        idName = ('id','td0' + i + '0' + j);
+      } else if (i < 10 && j > 9) {
+        idName = ('id','td0' + i + j);
+      } else if (i > 9 && j < 10) {
+        idName = ('id','td' + i + '0' + j);
+      } else {
+        idName = ('id','td' + i + j);
+      }
+
+      
+      var cell = document.getElementById(idName);
+
+        if (cell.style.backgroundColor === 'blue') {
+          array1[i][j] = 1;
+        } else {
+          array1[i][j] = 0;
+        }
+    };
+  };
 };
 
 // called on btn press!
@@ -125,19 +171,18 @@ function setRandomGrid() {
 };
 
 
+function changeCol(e) {
+  console.log('Click!!' + e);
+  // var state = array1[i][j];
+  // console.log(i + j)
 
-function changeCol(i,j) {
-  console.log('Click!!');
-  var state = array1[i][j];
-  console.log(i + j)
+  // if (state === 0) {
+  //   array1[i][j] = 1;
+  // } else {
+  //   array1[i][j] = 0;
+  // }
 
-  if (state === 0) {
-    array1[i][j] = 1;
-  } else {
-    array1[i][j] = 0;
-  }
-
-  displayOnGrid();
+  //displayOnGrid();
 };
 
 // // To allow the user to create specify the starting cells
@@ -194,6 +239,7 @@ function outpudGrid() {
 };
 
 function displayOnGrid() {
+  console.log(array1);
   
   for (let i = 0; i < gridsize; i++) {
     for (let j = 0; j < gridsize; j++) {
@@ -208,8 +254,23 @@ function displayOnGrid() {
         idName = ('id','td' + i + j);
       }
 
+      
+      // var cell = document.getElementById(idName);
+
+      //   if (cell.style.backgroundColor === 'blue') {
+      //     array1[i][j] = 1;
+      //   } else {
+      //     array1[i][j] = 0;
+      //   }
+
       if (array1[i][j] === 0) {
         var cell = document.getElementById(idName);
+
+        // if (cell.style.backgroundColor === 'blue') {
+        //   array1[i][j] = 1;
+        // } else {
+        //   array1[i][j] = 0;
+        // }
         cell.style.backgroundColor = 'white';
       } else {
         var cell = document.getElementById(idName);
@@ -219,6 +280,33 @@ function displayOnGrid() {
   };
   
 };
+
+// function displayOnGrid() {
+  
+//   for (let i = 0; i < gridsize; i++) {
+//     for (let j = 0; j < gridsize; j++) {
+//       var idName = ''
+//       if (i < 10 && j < 10) {
+//         idName = ('id','td0' + i + '0' + j);
+//       } else if (i < 10 && j > 9) {
+//         idName = ('id','td0' + i + j);
+//       } else if (i > 9 && j < 10) {
+//         idName = ('id','td' + i + '0' + j);
+//       } else {
+//         idName = ('id','td' + i + j);
+//       }
+
+//       if (array1[i][j] === 0) {
+//         var cell = document.getElementById(idName);
+//         cell.style.backgroundColor = 'white';
+//       } else {
+//         var cell = document.getElementById(idName);
+//         cell.style.backgroundColor = 'blue';
+//       };
+//     };
+//   };
+  
+// };
 
 // loops through the rows in the grid
 function funcLoop1(item, index, array) {
