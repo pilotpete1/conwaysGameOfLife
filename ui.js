@@ -4,11 +4,8 @@ const gridsize = 100;
 var array1 = [];
 var array2 = [];
 
-
-
 // console.log(array1);
 // console.log(array2);
-
 
 //0 = dead, 1 = alive
 // Any live cell with two or three live neighbours survives.
@@ -51,9 +48,6 @@ function generate_table() {
         } else {
           cell.setAttribute('id','td' + i + j);
         }
-        
-        
-        
 
         // var cellText = document.createTextNode("row "+i+", column "+j);
         // var cellText = document.createTextNode(0);
@@ -65,6 +59,7 @@ function generate_table() {
         
         // console.log(i,j)
 
+        // adds an event listener to all cells so that if the cell is clicked it will change state
         cell.addEventListener('click', function (e) {
           console.log(e.target);
           // e.target.style.backgroundColor = 'blue';
@@ -76,6 +71,7 @@ function generate_table() {
             e.target.style.backgroundColor = 'blue'
           };
 
+          // updates the grid so that once a cell is clicked it will display a different colour
           updateGrid();
         });
       }
@@ -89,11 +85,9 @@ function generate_table() {
     // appends <table> into <body>
     body.appendChild(tbl);
 
+    // initializes the grid to be completely dead.
     clearGrid();
   }
-
-
-
 
 // called on btn press - sets all cells to be 0!
 function clearGrid() {
@@ -110,6 +104,7 @@ function clearGrid() {
   displayOnGrid();
 };
 
+// called when a cell is clicked so that the array is updated.
 function updateGrid() {
   for (let i = 0; i < gridsize; i++) {
     for (let j = 0; j < gridsize; j++) {
